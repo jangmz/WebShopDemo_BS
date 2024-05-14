@@ -1,8 +1,8 @@
-export default function Input ({ label, type }) {
+export default function Input ({ label, type, onChange }) {
     return (
         <div className="input-field">
-            <label for={label}>{label}</label>
-            <input name={label} type={type} />
+            <label>{label}</label>
+            <input name={label} type={type} onChange={onChange}/>
         </div>
     )
 }
