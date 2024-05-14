@@ -21,14 +21,20 @@ export default function Login() {
         console.log(user);
 
         try {
-            const response = await fetch("http://webshopdemo.devweb.b-s.si/api/WebShopDemo/Account/Authenticate", {
-                mode: "cors",    
+            const response = await fetch("https://cors-anywhere.herokuapp.com/http://webshopdemo.devweb.b-s.si/api/WebShopDemo/Account/Authenticate", {    
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(user)
+                body: JSON.stringify({
+                    "email": user.username,
+                    "password": user.password
+                })
             });
+
+            if (!response.ok) {
+                throw new Error("HTTP error: " + response.status);
+            }
 
             const data = await response.json();
             console.log("Response data:");
