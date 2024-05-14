@@ -1,13 +1,17 @@
-import { useState } from 'react'
+import { useState, createContext } from 'react'
 import './App.css'
 import { Link, Outlet, useLocation } from 'react-router-dom'
+import TokenMessage from './components/tokenMessage';
+
+export const TokenContext = createContext();
 
 function App() {
+  const [token, setToken] = useState(null);
   const location = useLocation();
   const isSubRoute = location.pathname !== "/";
 
   return (
-    <>
+    <TokenContext.Provider value={{ token, setToken }}>
       <div className='navigation'>
         <nav className='nav-menu'>
           <ul>
@@ -31,12 +35,13 @@ function App() {
           !isSubRoute && (
             <div className='home-page'>
               <h1>Home</h1>
+              <TokenMessage />
             </div>
           )
         }
         <Outlet />
       </div>
-    </>
+    </TokenContext.Provider>
   )
 }
 
