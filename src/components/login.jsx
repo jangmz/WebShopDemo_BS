@@ -21,7 +21,7 @@ export default function Login() {
         console.log(user);
 
         try {
-            const response = await fetch("https://cors-anywhere.herokuapp.com/http://webshopdemo.devweb.b-s.si/api/WebShopDemo/Account/Authenticate", {    
+            const response = await fetch("http://webshopdemo.devweb.b-s.si/api/WebShopDemo/Account/Authenticate", {    
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
