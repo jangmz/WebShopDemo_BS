@@ -5,7 +5,7 @@ import ItemCard from "./itemCard";
 
 export default function Shop() {
     const { token } = useContext(TokenContext);
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState();
     const [loading, setLoading] = useState(true);
 
 
@@ -32,9 +32,12 @@ export default function Shop() {
 
     if (loading) {
         return (
-            <div className="message">
-                <p>Loading...</p>
-            </div>
+            <>
+                <h1>Shop</h1>
+                <div className="message">
+                    <p>Loading...</p>
+                </div>
+            </>
         )
     }
 
@@ -43,9 +46,9 @@ export default function Shop() {
             <h1>Shop</h1>
             <TokenMessage />
             <div className="items">
-                {items.map(item => {
+                {items.map(item => (
                     <ItemCard item={item} />
-                })}
+                ))}
             </div> 
         </>
     )
