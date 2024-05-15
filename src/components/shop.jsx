@@ -4,11 +4,11 @@ import { useContext, useEffect, useState } from "react";
 import ItemCard from "./itemCard";
 
 export default function Shop() {
-    const { token } = useContext(TokenContext);
+    const { token } = useContext(TokenContext); // authorization token
     const [items, setItems] = useState();
     const [loading, setLoading] = useState(true);
 
-
+    // fetch items
     useEffect(() => {
         fetch("http://webshopdemo.devweb.b-s.si/api/public/WebShopDemo/pub/FLB/Item/?%24top=30", {
             method: "GET",
@@ -30,6 +30,7 @@ export default function Shop() {
         .finally(() => setLoading(false));
     }, [])
 
+    // while items are being fetched
     if (loading) {
         return (
             <>
@@ -41,13 +42,21 @@ export default function Shop() {
         )
     }
 
+    // adding item to a cart
+    function handleAddToCart(itemId, quantity) {
+        // handle adding to a cart
+        console.log("Item ID: " + itemId);
+        console.log("Quantity: " + quantity);
+
+    }
+
     return (
         <>
             <h1>Shop</h1>
             <TokenMessage />
             <div className="items">
                 {items.map(item => (
-                    <ItemCard item={item} />
+                    <ItemCard key={item.id} item={item} handleAddToCart={handleAddToCart} />
                 ))}
             </div> 
         </>
