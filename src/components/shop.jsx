@@ -1,12 +1,14 @@
 import TokenMessage from "./tokenMessage";
 import { TokenContext } from "../App";
 import { useContext, useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import ItemCard from "./itemCard";
 
 export default function Shop() {
     const { token } = useContext(TokenContext); // authorization token
     const [items, setItems] = useState();
     const [loading, setLoading] = useState(true);
+    const navigation = useNavigate(); // delete this when finished <----------------------
 
     // fetch items
     useEffect(() => {
@@ -40,6 +42,11 @@ export default function Shop() {
                 </div>
             </>
         )
+    }
+
+    // delete this when finished <----------------------------
+    if (token === null) {
+        navigation("/login");
     }
 
     // adding item to a cart
