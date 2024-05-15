@@ -1,11 +1,17 @@
-import Input from "./input"
-import { useState } from "react";
+import Input from "./input";
+import { TokenContext } from "../App";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+    const {token, setToken} = useContext(TokenContext);
+    const navigate = useNavigate();
+    const [redirect, setRedirect] = useState(false);
     const [user, setUser] = useState({
-        username: "",
-        password: "",
+        username: "demo@local",
+        password: "localDemo1234!",
     });
+    
 
     function handleUsernameChange(e) {
         setUser({ ...user, username: e.target.value });
@@ -37,14 +43,18 @@ export default function Login() {
             }
 
             const data = await response.json();
-            console.log("Response data:");
-            console.log(data);
-            // handle data
+            console.log("Response token: " + data.token);
+            setToken(data.token);
+            setRedirect(true);
         } catch (error) {
             console.error("Error: " + error);
-            // handle error
         }
     }
+
+    if(redirect) {
+        navigate("/shop");
+    }
+
     return (
         <div id="login">
             <form onSubmit={handleSubmit} method="POST">

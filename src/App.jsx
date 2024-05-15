@@ -24,9 +24,9 @@ function App() {
             <li>
               <Link to="cart">Cart</Link>
             </li>
-            <li>
+            { token === null && <li>
               <Link to="login">Authenticate</Link>
-            </li>
+            </li> }
           </ul>
         </nav>
       </div>
