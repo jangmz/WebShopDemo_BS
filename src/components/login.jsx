@@ -4,7 +4,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-    const {token, setToken} = useContext(TokenContext);
+    const { setToken } = useContext(TokenContext);
     const navigate = useNavigate();
     const [redirect, setRedirect] = useState(false);
     const [user, setUser] = useState({
