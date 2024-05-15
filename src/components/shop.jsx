@@ -1,11 +1,12 @@
 import TokenMessage from "./tokenMessage";
-import { TokenContext } from "../App";
+import { TokenContext, CartContext } from "../App";
 import { useContext, useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ItemCard from "./itemCard";
 
 export default function Shop() {
     const { token } = useContext(TokenContext); // authorization token
+    const { cart, setCart } = useContext(CartContext);
     const [items, setItems] = useState();
     const [loading, setLoading] = useState(true);
     const navigation = useNavigate(); // delete this when finished <----------------------
@@ -51,10 +52,12 @@ export default function Shop() {
 
     // adding item to a cart
     function handleAddToCart(itemId, quantity) {
+        //console.log("Item ID: " + itemId);
+        //console.log("Quantity: " + quantity);
+        const newItem = items.find(item => item.id === itemId);
+        newItem.quantity = quantity;
         // handle adding to a cart
-        console.log("Item ID: " + itemId);
-        console.log("Quantity: " + quantity);
-
+        setCart([...cart, newItem]);
     }
 
     return (
