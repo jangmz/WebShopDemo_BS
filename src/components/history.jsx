@@ -11,7 +11,6 @@ export default function History() {
     //orderKeys.map(orderKey => console.log(orderKey));
 
     useEffect(() => {
-        let orders;
         // retrieve orders
         fetch("http://webshopdemo.devweb.b-s.si/api/public/WebShopDemo/pub/FLB/Order/?%24top=30", {
             method: "GET",
@@ -30,8 +29,8 @@ export default function History() {
         .then(dataOrders => {
             
             // save only orders from "demo@local"
-            orders = dataOrders.filter(order => order.metaData.createdBy === "demo@local");
-            //console.log(dataOrders);
+            const orders = dataOrders.filter(order => order.metaData.createdBy === "demo@local");
+            console.log(dataOrders);
 
             // retrieve order items
             orders.map(order => {
@@ -52,9 +51,9 @@ export default function History() {
                 })
                 .then(orderItemsData => {
                     console.log("ORDER ITEMS:");
-                    console.log(orderItemsData);
+                    console.log(orderItemsData); // items get fetched correctly
                     tempOrderDataArray.push(orderItemsData);
-                    setOrdersData([...ordersData], tempOrderDataArray);
+                    setOrdersData([...ordersData, tempOrderDataArray]);
                 })
                 .catch(error => console.error(error))
             })
@@ -82,10 +81,30 @@ export default function History() {
                 <thead>
                     <th>Order date</th>
                     <th>Order key</th>
+                    <th>Ordered items</th>
                 </thead>
                 <tbody>
+                    {ordersData.map(orderData => (
+                        <tr key={orderData[0].key}> {/* key seems to be duplicated, not all orders are displayed */}
+                            <td>{orderData[0].metaData.created}</td>
+                            <td>{orderData[0].key}</td>
+                            <td>
+                                {orderData[1].map(item => { // items are not displayed
+                                    <td>{item.name} ({item.quantity}x) Amount: {item.total_Amount}</td>
+                                })}
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </>
     )
 }
+
+/*
+    ordersData 
+        |_ order
+        |_ orderItems (array)
+                        |____ Item 1
+                        |____ Item 2 ...
+*/
