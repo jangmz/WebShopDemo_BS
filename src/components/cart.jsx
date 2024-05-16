@@ -1,10 +1,11 @@
 import TokenMessage from "./tokenMessage";
-import { TokenContext, CartContext } from "../App";
+import { TokenContext, CartContext, PastOrdersContext } from "../App";
 import { useContext, useState } from "react";
 
 export default function Cart() {
     const { token } = useContext(TokenContext);
     const { cart, setCart } = useContext(CartContext);
+    const { orders, setOrders } = useContext(PastOrdersContext);
     let totalAmount = 0;
 
     cart.map(item => totalAmount += (item.quantity * item.amount));
@@ -28,6 +29,10 @@ export default function Cart() {
                 })
             });
 
+            if (!orderResponse.ok) {
+                throw new Error("Failed to create order");
+            }
+
             const orderData = await orderResponse.json();
             console.log("Order:");
             console.log(orderData);
@@ -43,21 +48,28 @@ export default function Cart() {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        item_Lookup: cart[i].id,
-                        order_Lookup: orderData.id,
+                        item_Lookup: cart[i].key,
+                        order_Lookup: orderData.key,
                         quantity: cart[i].quantity,
                     })
                 });
+
+                if (!itemResponse.ok) {
+                    throw new Error("Failed to add item to order");
+                }
 
                 const itemData = await itemResponse.json();
                 console.log("Item added to order: ");
                 console.log(itemData);
             }
+            // add order key to past orders
+            setOrders([...orders, orderData.key]);
 
-            //setCart([]);
+            // clear the cart
+            setCart([]);
 
         } catch (error) {
-            console.error("Error placing order: " + error);
+            console.error(error);
         }
     }
 
@@ -88,18 +100,3 @@ export default function Cart() {
         </>
     )
 }
-
-/*
-request body
-{
-  "item_Lookup": "string",
-  "quantity": 0,
-  "total_Amount": 0,
-  "amount": 0,
-  "name": "string",
-  "order_Lookup": "string",
-  "eTag": "string",
-  "id": "string",
-  "key": "string"
-}
-*/
