@@ -10,14 +10,14 @@ export const PastOrdersContext = createContext();
 function App() {
   const [token, setToken] = useState(null);
   const [cart, setCart] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const [orderKeys, setOrderKeys] = useState([]);
   const location = useLocation();
   const isSubRoute = location.pathname !== "/";
 
   return (
     <TokenContext.Provider value={{ token, setToken }}>
       <CartContext.Provider value={{ cart, setCart }}>
-        <PastOrdersContext.Provider value= {{ orders, setOrders }}>
+        <PastOrdersContext.Provider value= {{ orderKeys, setOrderKeys }}>
           <div className='navigation'>
             <nav className='nav-menu'>
               <ul>

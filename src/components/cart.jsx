@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 export default function Cart() {
     const { token } = useContext(TokenContext);
     const { cart, setCart } = useContext(CartContext);
-    const { orders, setOrders } = useContext(PastOrdersContext);
+    //const { setOrderKeys } = useContext(PastOrdersContext);
     let totalAmount = 0;
 
     cart.map(item => totalAmount += (item.quantity * item.amount));
@@ -63,7 +63,7 @@ export default function Cart() {
                 console.log(itemData);
             }
             // add order key to past orders
-            setOrders([...orders, orderData.key]);
+            //setOrderKeys([...orders, orderData.key]);
 
             // clear the cart
             setCart([]);
