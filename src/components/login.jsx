@@ -57,9 +57,8 @@ export default function Login() {
 
     return (
         <div id="login">
-            <h3>Just press Authenticate</h3>
             <form onSubmit={handleSubmit} method="POST">
-                <Input 
+                {/*<Input 
                     label="username" 
                     type="text" 
                     onChange={handleUsernameChange} 
@@ -68,7 +67,7 @@ export default function Login() {
                     label="password" 
                     type="password" 
                     onChange={handlePasswordChange} 
-                />
+                />*/}
                 <button className="btn">Authenticate</button>
             </form>
         </div>
