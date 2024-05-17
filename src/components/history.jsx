@@ -1,17 +1,15 @@
 import TokenMessage from "./tokenMessage";
-import { TokenContext, PastOrdersContext } from "../App";
+import { TokenContext } from "../App";
 import { useContext, useEffect, useState } from "react";
 
 export default function History() {
     const { token } = useContext(TokenContext);
     //const { orderKeys } = useContext(PastOrdersContext);
     const [ordersData, setOrdersData] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); 
 
-    //orderKeys.map(orderKey => console.log(orderKey));
-
+    // retrieve order keys
     useEffect(() => {
-        // retrieve orders
         fetch("http://webshopdemo.devweb.b-s.si/api/public/WebShopDemo/pub/FLB/Order/?%24top=30", {
             method: "GET",
             headers: {
@@ -26,43 +24,64 @@ export default function History() {
 
             return responseOrders.json();
         })
-        .then(dataOrders => {
-            
-            // save only orders from "demo@local"
-            const orders = dataOrders.filter(order => order.metaData.createdBy === "demo@local");
-            console.log(dataOrders);
+        .then(APIOrdersData => {
+            // extract orders created by "demo@local" 
+            // hardcoded for development purposes
+            const orders = APIOrdersData.filter(order => order.metaData.createdBy === "demo@local");
 
-            // retrieve order items
-            orders.map(order => {
-                let tempOrderDataArray = [order];
-                fetch(`http://webshopdemo.devweb.b-s.si/api/public/WebShopDemo/pub/FLB/Order Item/?%24filter=order_Lookup%20eq%20${order.key}&%24top=30`, {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-type": "application/json",
-                    }
-                })
-                .then(responseOrderItems => {
-                    if (!responseOrderItems.ok) {
-                        throw new Error("Failed to retrieve order items");
-                    }
-                    
-                    return responseOrderItems.json();
-                })
-                .then(orderItemsData => {
-                    console.log("ORDER ITEMS:");
-                    console.log(orderItemsData); // items get fetched correctly
-                    tempOrderDataArray.push(orderItemsData);
-                    setOrdersData([...ordersData, tempOrderDataArray]);
-                })
-                .catch(error => console.error(error))
-            })
+            // save order keys & date to the state
+            setOrdersData(orders.map(order => ({
+                orderKey: order.key,
+                orderDate: formatDate(order.metaData.created),
+                orderItems: []
+            })));
+
+            // retrieve order items for each order
+            // waiting for all promises to resolve before proceeding
+            return Promise.all(orders.map(order => retrieveOrderItems(order.key)));
+        })
+        .then(allOrderItems => {
+            // save order items to the state
+            setOrdersData(prevOrdersData => prevOrdersData.map((order, index) => ({ ...order, orderItems: allOrderItems[index]})));
         })
         .catch(error => {
             console.error(error);
         })
-        .finally(setLoading(false))        
-    }, []);
+        .finally(setLoading(false))
+    }, [token]);
+
+    // retrieves items from an order by key
+    async function retrieveOrderItems(orderKey) {
+        const responseOrderItems = await fetch (`http://webshopdemo.devweb.b-s.si/api/public/WebShopDemo/pub/FLB/Order Item/?%24filter=order_Lookup%20eq%20${orderKey}&%24top=30`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-type": "application/json",
+            }
+        })
+        
+        if (!responseOrderItems.ok) {
+            throw new Error("Failed fetching order items");
+        }
+
+        const orderItems = await responseOrderItems.json();
+
+        return orderItems;
+    }
+
+    // formats date into "DD.MM.YYYY (HH:MM)"
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+
+        return `${day}. ${month}. ${year} (${hours}:${minutes})`;
+    }
 
     if (token !== null && loading) {
         return (
@@ -84,14 +103,14 @@ export default function History() {
                     <th>Ordered items</th>
                 </thead>
                 <tbody>
-                    {ordersData.map(orderData => (
-                        <tr key={orderData[0].key}> {/* key seems to be duplicated, not all orders are displayed */}
-                            <td>{orderData[0].metaData.created}</td>
-                            <td>{orderData[0].key}</td>
+                    { ordersData.map(order => (
+                        <tr>
+                            <td>{order.orderDate}</td>
+                            <td>{order.orderKey}</td>
                             <td>
-                                {orderData[1].map(item => { // items are not displayed
-                                    <td>{item.name} ({item.quantity}x) Amount: {item.total_Amount}</td>
-                                })}
+                                {order.orderItems.map(item => (
+                                    <p>{item.name} ({item.quantity} pieces)</p>
+                                ))}
                             </td>
                         </tr>
                     ))}
@@ -100,11 +119,3 @@ export default function History() {
         </>
     )
 }
-
-/*
-    ordersData 
-        |_ order
-        |_ orderItems (array)
-                        |____ Item 1
-                        |____ Item 2 ...
-*/
