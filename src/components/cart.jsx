@@ -63,6 +63,11 @@ export default function Cart() {
         }
     }
 
+    function handleRemove(itemId) {
+        const newCart = cart.filter(item => item.id !== itemId);
+        setCart(newCart);
+    }
+
     return (
         <>
             <h1>Cart</h1>
@@ -73,6 +78,7 @@ export default function Cart() {
                         <th>Item</th>
                         <th>Quantity</th>
                         <th>Price</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,12 +87,13 @@ export default function Cart() {
                             <td>{item.name}</td>
                             <td>{item.quantity}</td>
                             <td>{item.amount}</td>
+                            <td><button className="btn rem-btn" onClick={() => handleRemove(item.id)}>Remove</button></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             <p>Total amount: <strong>{totalAmount}</strong></p>
-            <button onClick={handleOrder}>Order now</button>
+            <button className="btn" onClick={handleOrder}>Order now</button>
         </>
     )
 }
