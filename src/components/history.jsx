@@ -95,7 +95,7 @@ export default function History() {
         <>
             <h1>Order history</h1>
             <TokenMessage />
-            <table>
+            <table className="history-table">
                 <thead>
                     <th>Order date</th>
                     <th>Order key</th>
@@ -107,9 +107,12 @@ export default function History() {
                             <td>{order.orderDate}</td>
                             <td>{order.orderKey}</td>
                             <td>
-                                {order.orderItems.map(item => (
-                                    <p>{item.name} ({item.quantity} pieces)</p>
-                                ))}
+                                <ul>
+                                    {order.orderItems.map(item => (
+                                        <li>{item.name} ({item.quantity} pieces)</li>
+                                    ))}
+                                </ul>
+                                
                             </td>
                         </tr>
                     ))}

@@ -106,7 +106,7 @@ body {
     width: 40px;
 }
 
-/* CART */
+/* CART & HISTORY TABLES */
 .rem-btn {
     background-color: rgb(245, 145, 145);
 }
@@ -118,7 +118,8 @@ body {
     flex-direction: column;
     align-items: center;
 }
-.cart-table {
+.cart-table,
+.history-table {
     border: 1px solid rgb(216, 215, 215);
     border-radius: 10px;
     box-shadow: 0 0 5px rgb(177, 177, 177);
@@ -130,4 +131,36 @@ body {
 }
 tbody > tr {
     border-bottom: 1px solid black;
+}
+/* HISTORY */
+.history-table,
+.cart-table {
+    border-collapse: collapse;
+}
+
+.history-table thead th,
+.cart-table thead th {
+    border-bottom: 2px solid black; 
+    padding: 8px;
+    text-align: left;
+}
+
+.history-table tbody tr,
+.cart-table tbody tr {
+    border-bottom: 1px solid #ddd; 
+}
+
+.history-table tbody tr:last-child
+.cart-table tbody tr:last-child {
+    border-bottom: none; 
+}
+
+.history-table td,
+.cart-table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.history-table td p {
+    margin: 0; 
 }
