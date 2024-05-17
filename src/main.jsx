@@ -6,7 +6,8 @@ import Shop from "./components/shop.jsx"
 import Cart from "./components/cart.jsx"
 import Login from "./components/login.jsx"
 import History from './components/history.jsx'
-import './index.css'
+//import './index.css'
+import "./styles/styles.css"
 
 const router = createBrowserRouter([
   {

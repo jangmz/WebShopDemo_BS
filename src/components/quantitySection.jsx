@@ -17,10 +17,12 @@ export default function AddToCart({ handleAddToCart, itemId}) {
 
     return (
         <div className="add-to-cart-section">
-            <button onClick={decrementQuantity}>-</button>
-            <input type="number" value={quantity} onChange={changeQuantity}/>
-            <button onClick={incrementQuantity}>+</button>
-            <button onClick={() => handleAddToCart(itemId, quantity)}>Add To Cart</button>
+            <div className="quantity-sec">
+                <button className="btn-s" onClick={decrementQuantity}>-</button>
+                <input type="number" value={quantity} onChange={changeQuantity}/>
+                <button className="btn-s" onClick={incrementQuantity}>+</button>
+            </div>
+            <button className="btn" onClick={() => handleAddToCart(itemId, quantity)}>Add To Cart</button>
         </div>
     )
 }

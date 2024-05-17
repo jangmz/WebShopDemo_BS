@@ -1,5 +1,5 @@
 import { useState, createContext } from 'react'
-import './App.css'
+//import './App.css'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import TokenMessage from './components/tokenMessage';
 
@@ -42,10 +42,10 @@ function App() {
           <div className='content'>
             {
               !isSubRoute && (
-                <div className='home-page'>
+                <>
                   <h1>Home</h1>
                   <TokenMessage />
-                </div>
+                </>
               )
             }
             <Outlet />
