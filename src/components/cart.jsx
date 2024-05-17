@@ -1,19 +1,16 @@
 import TokenMessage from "./tokenMessage";
 import { TokenContext, CartContext, PastOrdersContext } from "../App";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 export default function Cart() {
     const { token } = useContext(TokenContext);
     const { cart, setCart } = useContext(CartContext);
-    //const { setOrderKeys } = useContext(PastOrdersContext);
     let totalAmount = 0;
 
     cart.map(item => totalAmount += (item.quantity * item.amount));
 
     async function handleOrder() {
         try {
-            console.log("Cart: ");
-            console.log(cart);
             // create an order
             const orderResponse = await fetch("http://webshopdemo.devweb.b-s.si/api/public/WebShopDemo/pub/FLB/Order", {
                 method: "PUT",
@@ -34,9 +31,6 @@ export default function Cart() {
             }
 
             const orderData = await orderResponse.json();
-            console.log("Order:");
-            console.log(orderData);
-            console.log("Order ID: " + orderData.id);
 
             // adding items to the order
             for (let i = 0; i < cart.length; i++) {
@@ -59,11 +53,7 @@ export default function Cart() {
                 }
 
                 const itemData = await itemResponse.json();
-                console.log("Item added to order: ");
-                console.log(itemData);
             }
-            // add order key to past orders
-            //setOrderKeys([...orders, orderData.key]);
 
             // clear the cart
             setCart([]);

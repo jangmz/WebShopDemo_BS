@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from "react";
 
 export default function History() {
     const { token } = useContext(TokenContext);
-    //const { orderKeys } = useContext(PastOrdersContext);
     const [ordersData, setOrdersData] = useState([]);
     const [loading, setLoading] = useState(true); 
 
