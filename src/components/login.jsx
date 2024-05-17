@@ -68,7 +68,7 @@ export default function Login() {
                     type="password" 
                     onChange={handlePasswordChange} 
                 />*/}
-                <button>Authenticate</button>
+                <button className="btn">Authenticate</button>
             </form>
         </div>
     )
