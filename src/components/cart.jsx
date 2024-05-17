@@ -72,28 +72,32 @@ export default function Cart() {
         <>
             <h1>Cart</h1>
             <TokenMessage />
-            <table className="cart">
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {cart.map(item => (
-                        <tr key={item.id}>
-                            <td>{item.name}</td>
-                            <td>{item.quantity}</td>
-                            <td>{item.amount}</td>
-                            <td><button className="btn rem-btn" onClick={() => handleRemove(item.id)}>Remove</button></td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <p>Total amount: <strong>{totalAmount}</strong></p>
-            <button className="btn" onClick={handleOrder}>Order now</button>
+            {cart.length === 0 
+                ? <p>Cart is empty.</p> 
+                : <div className="cart"> 
+                    <table className="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cart.map(item => (
+                                <tr key={item.id}>
+                                    <td>{item.name}</td>
+                                    <td>{item.quantity}</td>
+                                    <td>{item.amount}</td>
+                                    <td><button className="btn rem-btn" onClick={() => handleRemove(item.id)}>Remove</button></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <p>Total amount: <strong>{totalAmount}</strong></p>
+                    <button className="btn" onClick={handleOrder}>Order now</button>
+                </div>}
         </>
     )
 }
