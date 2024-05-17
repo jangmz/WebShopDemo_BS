@@ -8,8 +8,8 @@ export default function Login() {
     const navigate = useNavigate();
     const [redirect, setRedirect] = useState(false);
     const [user, setUser] = useState({
-        username: "demo@local",
-        password: "localDemo1234!",
+        username:"", //"demo@local",
+        password:"" //"localDemo1234!",
     });
     
 
