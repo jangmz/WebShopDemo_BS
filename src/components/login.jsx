@@ -8,8 +8,8 @@ export default function Login() {
     const navigate = useNavigate();
     const [redirect, setRedirect] = useState(false);
     const [user, setUser] = useState({
-        username:"", //"demo@local",
-        password:"" //"localDemo1234!",
+        username:"demo@local",
+        password:"localDemo1234!",
     });
     
 
@@ -58,7 +58,7 @@ export default function Login() {
     return (
         <div id="login">
             <form onSubmit={handleSubmit} method="POST">
-                <Input 
+                {/*<Input 
                     label="username" 
                     type="text" 
                     onChange={handleUsernameChange} 
@@ -67,7 +67,7 @@ export default function Login() {
                     label="password" 
                     type="password" 
                     onChange={handlePasswordChange} 
-                />
+                />*/}
                 <button>Authenticate</button>
             </form>
         </div>
